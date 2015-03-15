@@ -1,0 +1,39 @@
+forma: & { } * + -
+# forma: delimanator block_delimnatorx2 tag_delimanator in_delim ex_delim
+#          Copyright Sundeep S. Sangha 2013 - 2014.
+
+CC=&c++*complier&&
+FOBJ=&FOBJ*OBJECT_COMPLIER_FLAGS&&
+FLAGS=&FLAGS*&&
+
+default: &*&&
+	$CC &{%}&&
+
+clean:
+	rm &*&& &{ %}&&
+
+&*&&: &{ %}&&
+	$CC $FLAGS -o $^ &{ %}&
+
+&{%: %
+	$CC $FOBJ $^}&
+
+$(LIB_STATIC): $(OBJS)
+	$(CSTATIC) $(LIB_STATIC) $(OBJS)
+
+$(LIBNAME): $(OBJS)
+	$(CSHARED) $@ $(OBJS)
+
+remove:
+	rm -f $(LIBDIR)/$(LIBNAME)
+	rm -f $(LIBDIR)/$(LIBNAMEDY)
+	rm -f $(LIBDIR)/$(LIBNAMEDY).$(MAJORV)
+	rm -rf $(INCDIR) 
+
+install:
+	mkdir -p -m 655 $(INCDIR)
+	install -c $(LIBNAME) $(LIBDIR)
+	ldconfig -v -n $(LIBDIR)
+	ln -sf $(LIBDIR)/$(LIBNAME) $(LIBDIR)/$(LIBNAMEDY).$(MAJORV)
+	ln -sf $(LIBDIR)/$(LIBNAMEDY).$(MAJORV) $(LIBDIR)/$(LIBNAMEDY)
+	cp $(HEADERS) $(INCDIR)

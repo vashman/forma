@@ -1,0 +1,18 @@
+forma: * ^ < > &
+#!/bin/sh
+CC=&CC&
+FOBJ=&FOBJ&
+FLAGS=&FLAGS&
+
+complie_object(){
+$CC $FOBJ 
+}
+
+{
+if [$1 -eq 'c']; then
+^CLEAR^
+else
+^COBJ^
+^CC^
+fi
+}^...

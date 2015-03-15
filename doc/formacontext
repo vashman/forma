@@ -1,0 +1,10 @@
+forma context: # :
+
+# allowed context tags
+OS:LINUX
+OS:UNIX
+OS:DEBIAN
+
+# variable tags
+COMPLIER:CC:g++ -g --std=c++11
+COMPLIER:COBJ g++ -gc --std=c++11

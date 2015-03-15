@@ -1,0 +1,24 @@
+^{
+<project>
+	<!-- model version is always 4.0.0 for Maven 2.x POMs -->
+	<modelVersion>4.0.0</modelVersion>
+ 
+<!-- project coordinates, i.e. a group of values which uniquely identify this project -->
+	<groupId>^ID^</groupId>
+	<artifactId>^TARGET^</artifactId>
+	<version>^VERSION^</version>
+ 
+<!-- library dependencies -->
+	<dependencies>
+		<dependency>
+		<!-- coordinates of the required library -->
+		<groupId>^ID^</groupId>
+		<artifactId>^^</artifactId>
+		<version>3.8.1</version>
+ 
+		<!-- this dependency is only used for running and compiling tests -->
+		<scope>^SCOPE^</scope>
+		</dependency>
+	</dependencies>
+</project>
+}^
