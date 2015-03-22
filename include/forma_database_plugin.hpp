@@ -37,7 +37,7 @@ forma_database_plugin<charT,traits,targetT>::forma_database_plugin(
   , dbmdl (_buf) {
 }
 
-/*  */
+/* do_get */
 template <typename charT, typename traits, typename targetT>
 bool
 forma_database_plugin<charT,traits,targetT>::do_get(
@@ -45,12 +45,11 @@ forma_database_plugin<charT,traits,targetT>::do_get(
 this->dbmdl.next_target();
 return true;
 }
-
 catch (...){
 return false;
 }
 
-/*  */
+/* do_get */
 template <typename charT, typename traits, typename targetT>
 bool
 forma_database_plugin<charT,traits,targetT>::do_get(
@@ -59,7 +58,6 @@ forma_database_plugin<charT,traits,targetT>::do_get(
 this->database.next_target(_target);
 return true;
 }
-
 catch (...){
 return false;
 }

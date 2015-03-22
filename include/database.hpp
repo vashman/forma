@@ -78,7 +78,8 @@ typesystems::set_typebuffer<
   basic_target<charT,traits,allocator,tag_allocator,flag_allocator>,target_container>(this->typesys);
 }
 
-/**/
+/* next_target
+*/
 template <
   typename charT
 , typename traits
@@ -90,7 +91,7 @@ void
 database<charT,traits,allocator,tag_allocator,flag_allocator>::next_target(
 ){
 auto & target_container
-  = typesystems::get_typebuffer<basic_target<charT,traits,alloc> >(this->);
+  = typesystems::get_typebuffer<basic_target<charT,traits,alloc> >(this->typesys);
   if (get_tag(
     this->stream
   , this->temp_target
@@ -124,7 +125,7 @@ auto & target_container
   , this->header.tag_delim
   , this->header.tag_seperator_delim
   , this->header.delim
-  ) &&){
+  )){
     if (this->temp_target == _target){
     target_container.push(this->temp_target);
     return;
