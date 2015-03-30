@@ -20,7 +20,7 @@ struct basic_context_header {
 /* get database header and verify */
 template <typename charT, typename traits>
 basic_context_header<charT>
-get_header(
+get_context_header(
   std::basic_istream<charT,traits> &
 );
 

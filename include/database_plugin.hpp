@@ -32,7 +32,7 @@ protected:
   do_next_target(
   ) = 0;
 
-  virtual void
+  virtual bool
   do_next_target(
     targetT const &
   ) = 0;

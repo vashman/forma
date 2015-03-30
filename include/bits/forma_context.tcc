@@ -11,7 +11,7 @@ namespace forma {
 /* get database header and verify */
 template <typename charT, typename traits>
 basic_context_header<charT>
-get_header(
+get_context_header(
   std::basic_istream<charT,traits> & _istream
 ){
 charT const * const header_string = "forma context:";

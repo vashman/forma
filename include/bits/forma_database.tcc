@@ -7,9 +7,10 @@
 #include <string>
 
 namespace forma {
-/**/
+/* get header */
 template <typename charT, typename traits>
-get_header(
+basic_database_header<charT>
+get_database_header(
   std::basic_istream<charT,traits> &
 ){
 charT const * const header_string = "forma:";
@@ -40,54 +41,59 @@ basic_forma_header<charT> header;
 return header;
 }
 
+/* is_tag */
+template <typename charT, typename traits>
+bool
+is_tag(
+  std::basic_istream<charT,traits> & _is
+, charT const _tag_delim
+){
+return (_is.peek() != traits::to_int_type(_tag_delim));
+}
+
 /* get next tag or false */
 template <typename charT, typename traits, typename alloc>
-bool
+basic_tag<charT,traits,alloc>
 get_tag(
   std::basic_istream<charT,traits> & _is
-, basic_tag<charT,traits,alloc> & _tag
-, charT const _sub_delim
-, charT const _tag_delim
 , charT const _tag_seperator_delim
-, charT const _delim
+, charT const _end_delim
 ){
-  if (_is.peek() != traits::to_int_type(_sub_delim)){
-  return false;
-  }
-_is.get();
-  if (_is.peek() != traits::to_int_type(_tag_delim)){
-  return false;
-  }
-_is.get();
 std::basic_string<charT,traits,alloc> buffer;
-  if (!std::getline(buffer, _delim)){
-  return false;
+  if (!std::getline(buffer, _end_delim)){
+  return ;
   }
 auto itb = std::begin(buffer)
    , ite = std::end(buffer);
-_tag.assign(itb, std::find(itb, ite, _tag_seperator_delim), ite);
-return true;
+return basic_tag<charT,traits,alloc>(
+  itb
+, std::find(itb, ite, _tag_seperator_delim)
+, ite);
 }
 
-/* get next sub or false */
-template <typename charT, typename traits, typename alloc>
+/* is_sub_element */
+template <typename charT, typename traits>
 bool
+is_sub_element(
+  std::basic_istream<charT,traits> &
+, charT const _sub_element_delim
+){
+return (_is.peek() != traits::to_int_type(_sub_delim));
+}
+
+/* get_sub_element */
+template <typename charT, typename traits, typename alloc>
+std::basic_string<charT,traits,alloc>
 get_sub_element(
   std::basic_istream<charT,traits> & _is
-, std::basic_string<charT,traits,alloc> & _ele
-, charT const _sub_delim
-, charT const _delim
+, charT const _end_delim
 ){
-  if (_is.peek() != traits::to_int_type(_sub_delim)){
-  return false;
-  }
-_is.get();
 std::basic_string<charT,traits,alloc> buffer;
   if (!std::getline(buffer, _delim)){
-  return false;
+  return ;
   }
-_ele.assign(std::begin(buffer), std::end(buffer));
-return true;
+std::basic_string<charT,traits,alloc>(std::begin(buffer)
+                                      , std::end(buffer));
 }
 
 } /* forma */

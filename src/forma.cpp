@@ -14,7 +14,7 @@ namespace forma {
 database_t 
 make_formadb(
 ){
-return std::make_shared<forma_database_plugin<char_t, traits_t> >(fff.rdbuf());
+return std::make_shared<forma_database_plugin<char_t, traits_t, target_t> >(fff.rdbuf());
 }
 
 context_t

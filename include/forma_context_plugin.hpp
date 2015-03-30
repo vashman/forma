@@ -1,6 +1,6 @@
 //
 
-#ifndef FORMA_FORMA_CONTECT_PLUGIN_HPP
+#ifndef FORMA_FORMA_CONTEXT_PLUGIN_HPP
 #define FORMA_FORMA_CONTEXT_PLUGIN_HPP
 
 #include "context_plugin.hpp"

@@ -9,7 +9,7 @@
 namespace forma {
 /**/
 template <typename charT, typename traits, typename targetT>
-class forma_database_plugin : public database_plugin {
+class forma_database_plugin : public database_plugin<targetT> {
 public:
   forma_database_plugin(
     std::basic_streambuf<charT,traits> *
@@ -17,11 +17,11 @@ public:
 
 private:
   virtual bool
-  do_get(
+  do_next_target(
   );
 
   virtual bool
-  do_get(
+  do_next_target(
     targetT const &
   );
 
@@ -33,14 +33,14 @@ template <typename charT, typename traits, typename targetT>
 forma_database_plugin<charT,traits,targetT>::forma_database_plugin(
   std::basic_streambuf<charT,traits> * _buf
 )
-  : database_plugin (this->dbmdl)
+  : database_plugin<targetT> (this->dbmdl)
   , dbmdl (_buf) {
 }
 
 /* do_get */
 template <typename charT, typename traits, typename targetT>
 bool
-forma_database_plugin<charT,traits,targetT>::do_get(
+forma_database_plugin<charT,traits,targetT>::do_next_target(
 ) try {
 this->dbmdl.next_target();
 return true;
@@ -52,10 +52,10 @@ return false;
 /* do_get */
 template <typename charT, typename traits, typename targetT>
 bool
-forma_database_plugin<charT,traits,targetT>::do_get(
+forma_database_plugin<charT,traits,targetT>::do_next_target(
   targetT const & _target
 ) try {
-this->database.next_target(_target);
+this->dbmdl.next_target(_target);
 return true;
 }
 catch (...){

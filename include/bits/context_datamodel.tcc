@@ -20,7 +20,7 @@ context_datamodel<charT,traits,tag_allocator,flag_allocator>
   std::basic_streambuf<charT,traits> * _buffer
 )
   : stream (_buffer)
-  , header (get_header(this->stream)) {
+  , header (get_context_header(this->stream)) {
 /* set buffer for tags as forma::basic_flag */
 typesystems::set_typebuffer<
   basic_flag<charT,traits,flag_allocator>,flag_container>(this->typesys);

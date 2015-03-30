@@ -12,10 +12,11 @@ namespace forma {
 template <typename charT, typename traits, typename allocator>
 struct basic_tag {
 public:
+  /* ctor */
   basic_tag(
   ) = default;
 
-  /**/
+  /* ctor */
   template <typename InputIt>
   basic_tag(
     InputIt _first_tag
@@ -24,7 +25,7 @@ public:
   , InputIt _last_root
   );
 
-  /**/
+  /* ctor */
   template <typename InputIt>
   basic_tag(
     InputIt _first
@@ -37,13 +38,15 @@ public:
     basic_tag<charT,traits,allocator> const &
   );
 
-  /**/
+  /* copy assignment */
   basic_tag<charT,traits,allocator> &
   operator=(
     basic_tag<charT,traits,allocator> const &
   );
 
-  /* compare */
+  /* compare
+  Compare tags and its root.
+  */
   template <typename InputIt>
   bool
   compare(

@@ -10,6 +10,7 @@
 #include <ostream>
 #include <algorithm>
 #include "forma_types.hpp" /* shared with plugin types */
+#include "target.hpp"
 #include "context_plugin.hpp"
 #include "database_plugin.hpp"
 //#include "istream_plugin.hpp"
@@ -24,7 +25,8 @@ namespace forma {
 //typedef std::unique_ptr<istream_plugin> istream_t;
 typedef std::shared_ptr<datamodel_plugin> datamodel_t;
 typedef std::shared_ptr<context_plugin> context_t;
-typedef std::shared_ptr<database_plugin> database_t;
+typedef basic_target<char_t, traits_t, std::allocator<char_t>, std::allocator<char_t>, std::allocator<char_t> > target_t;
+typedef std::shared_ptr<database_plugin<target_t> > database_t;
 
 /* tag_compare functor */
 /*template <typename InputIt>

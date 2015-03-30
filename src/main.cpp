@@ -5,6 +5,7 @@
 //          Copyright Sundeep S. Sangha 2013 - 2014.
 
 #include <set>
+#include <stack>
 #include <string>
 #include <data_pattern/data_model.hpp>
 #include "../include/forma.hpp"
@@ -15,8 +16,10 @@ using data_pattern::data_model;
 
 using forma::empty;
 using forma::make_context;
+using forma::make_formadb;
 using forma::tag_t;
 using forma::flag_t;
+using forma::target_t;
 using forma::context_t;
 using forma::database_t;
 
@@ -27,6 +30,22 @@ reverse,
 simulate,
 target,
 filename
+};
+
+class compare_tag {
+public:
+  explicit
+  compare_tag(
+    tag_t const &
+  );
+  
+  bool
+  operator()(
+  tag_t const &
+  ) const;
+
+private:
+  tag_t const & tag;
 };
 
 int main(int argc, char* argv[]) {
@@ -60,31 +79,42 @@ flag_t temp_flag;
 } /* get flags */
 } /* find context */
 
-database_t db (make_db());
+database_t db (make_formadb());
   if (!db){
   return 1;
   }
 
 db->next_target();
+/* List of all targets loaded. */
 std::vector<target_t> target_list;
-std::stack<target_t::dependice::value_type> target_queue;
+/* queue of the next dependency of the current target to look up. */
+std::stack<target_t::dependency_container::key_type> target_queue;
 auto iter_tags(begin(context_tags)), iend_tags(end(context_tags));
 for (target_t temp_target
     ; !empty<target_t>(db)
-    ; db->next_target(target_queue.top()), target_queue.pop()) {
+    ; temp_target.target = target_queue.top(), db->next_target(temp_target), target_queue.pop()
+){
 db >> temp_target;
-auto iter(begin(temp_target.dependicies))
-   , iend(end(temp_target.dependicies));
+auto dependency_iter(begin(temp_target.dependencies))
+   , dependency_iend(end(temp_target.dependencies));
+  while (dependency_iter != dependency_iend){
+  auto iter(begin((*dependency_iter).second)), iend(end((*dependency_iter).second));
   while (iter != iend){
     /* filter next targets via tags */
-    if (std::find(iter_tags, iend_tags, *iter) != end){
-    target_queue.push(*iter);
-    continue;
+    if (std::find_if(iter_tags, iend_tags, compare_tag(*iter)) != iend_tags){
+    target_queue.push((*dependency_iter).first);
+    } else {
+    /* if last tag */
+    auto test_iter(iter);
+      if (++test_iter == iend){
+      /* update the target list if dependency is not used. */
+      dependency_iend = std::remove(dependency_iter, dependency_iend, *dependency_iter);
+      //dependency_iter = std::advance(std::begin(temp_target.dependencies), std::distance(dependency_iter, dependency_iend));
+      }
     }
-  iend = std::remove(iter, iend, *iter);
-  iter = begin(temp_target.dependicies);
+  ++iter;
   }
-temp_target.dependicies.erase(iter, iend);
+  }
 target_list.push_back(temp_target);
 }
 
@@ -140,14 +170,14 @@ while (build_template.read(iobuffer, buffer_size)){
   }
 / * This assumes the next char after buffmid is a tag cheack delimator. * /
 auto tag_iter = find_tag(next(buffmid), buffend, head.in, head.ex);
-  while (tag_iter != buffend) { /* Check the next tag can not be found. * /
+  while (tag_iter != buffend) { / * Check the next tag can not be found. * /
     if (!validate_tag(*buffmid
                    , listbegin
                    , listend
                    , head.in
                    , head.ex
                    , tag_compare())
-    ){ /* tag did not validate * /
+    ){ / * tag did not validate * /
     buffmid = buffend;
     statement_begin = buffend;
     tag_iter = buffend;
@@ -159,11 +189,24 @@ auto tag_iter = find_tag(next(buffmid), buffend, head.in, head.ex);
   break;
   }
 
-/* lookup tag and replace value * /
+/ * lookup tag and replace value * /
 build_file.stream << *(find_replacement(taglist_begin
                       , taglist_end
                       , default_subtag
                       , tag));
 }*/
 return 0;
+}
+
+compare_tag::compare_tag(
+  tag_t const & _tag
+)
+  : tag (_tag) {
+}
+  
+bool
+compare_tag::operator()(
+  tag_t const & _tag
+) const {
+return (_tag.tag == this->tag.tag);
 }

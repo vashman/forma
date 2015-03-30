@@ -1,9 +1,12 @@
-//
+// holds associations between targets & dependences
+
+//          Copyright Sundeep S. Sangha 2013 - 2014.
 
 #ifndef FORMA_TARGET_HPP
-#define FOMRA_TARGET_HPP
+#define FORMA_TARGET_HPP
 
 #include <string>
+#include "tag.hpp"
 
 namespace forma {
 /**/
@@ -16,10 +19,16 @@ template <
 >
 class basic_target{
 public:
-  typedef std::vector<std::basic_tag<charT,traits,flag_allocator,tag_allocator> > tags_t;
+  typedef std::vector<
+    basic_tag<charT,traits,tag_allocator> > tags_t;
+  typedef std::basic_string<charT,traits,allocator> dependency;
+  typedef std::map<dependency, tags_t> dependency_container;
 
-  basic_target() = default;
+  /* ctor */
+  basic_target(
+  ) = default;
 
+  /* ctor */
   template <typename InputIt, typename InputItVec>
   basic_target(
     InputIt _begin_target
@@ -27,20 +36,49 @@ public:
   , InputItVec _begin
   , InputItVec _end
   );
-
+  
   std::basic_string<charT,traits,allocator> target;
-  std::map<std::basic_string<charT,traits,allocator>, tags_t> dependices;
+  std::map<dependency, tags_t> dependencies;
 };
 
+template <
+  typename charT, typename traits, typename allocator
+, typename flag_allocator, typename tag_allocator>
+bool
+same_target(
+  basic_target<charT,traits,allocator,flag_allocator,tag_allocator> const &
+, basic_target<charT,traits,allocator,flag_allocator,tag_allocator> const &
+);
+
+/* target ctor */
+template <
+  typename charT
+, typename traits
+, typename allocator
+, typename flag_allocator
+, typename tag_allocator
+>
 template <typename InputIt, typename InputItVec>
-basic_target(
+basic_target<charT,traits,allocator,flag_allocator,tag_allocator>
+::basic_target(
   InputIt _begin_target
 , InputIt _end_target
 , InputItVec _begin
 , InputItVec _end
 )
  : target (_begin_target, _end_target)
- , dependices (_begin, _end) {
+ , dependencies (_begin, _end) {
+}
+
+template <
+  typename charT, typename traits, typename allocator
+, typename flag_allocator, typename tag_allocator>
+bool
+same_target(
+  basic_target<charT,traits,allocator,flag_allocator,tag_allocator> const & _target
+, basic_target<charT,traits,allocator,flag_allocator,tag_allocator> const & _other
+){
+return (_target.target == _other.target);
 }
 
 } /* forma */
