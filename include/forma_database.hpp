@@ -36,17 +36,6 @@ is_tag(
 , charT const _tag_delim
 );
 
-/* get_tag
-retrieves the next element as a tag.
-*/
-template <typename charT, typename traits, typename alloc>
-basic_tag<charT,traits,alloc>
-get_tag(
-  std::basic_istream<charT,traits> &
-, charT const _tag_seperator_delim
-, charT const _end_delim
-);
-
 /* is_sub_element
 Checks whether the next element is a sub-element of the last record.
 */

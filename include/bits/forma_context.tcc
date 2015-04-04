@@ -33,32 +33,13 @@ basic_context_header<charT> header;
   break;
   default:
   std::cerr << traits::length(buffer);
-  throw std::runtime_error("Header not parsable due to size differnce.");
+  throw std::runtime_error("Header not parsable due to size difference.");
   }
   if (_istream.peek() == traits::to_int_type('\n')){/* if newline is delim character */
   _istream.get();
   header.section_delim = '\n';
   }
 return header;
-}
-
-/* get next tag from database */
-template <typename charT, typename traits, typename allocator>
-basic_tag<charT,traits,allocator>
-get_tag(
-  std::basic_istream<charT,traits> & _stream
-, charT _record_delim /* end of record delimnator */
-, charT _tag_delim
-){
-std::basic_string<charT,traits,allocator> buffer;
-  if (std::getline(_stream, buffer, _record_delim)){
-  auto itb = std::begin(buffer), ite = std::end(buffer);
-  return basic_tag<charT,traits,allocator>(
-           itb
-         , std::find(itb, ite, _tag_delim)
-         , ite);
-  }
-throw std::runtime_error("Could not determine tag, database stream is not well formatted.");
 }
 
 /* get next flag from database */

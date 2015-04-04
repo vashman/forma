@@ -103,17 +103,14 @@ auto dependency_iter(begin(temp_target.dependencies))
     /* filter next targets via tags */
     if (std::find_if(iter_tags, iend_tags, compare_tag(*iter)) != iend_tags){
     target_queue.push((*dependency_iter).first);
-    } else {
-    /* if last tag */
-    auto test_iter(iter);
-      if (++test_iter == iend){
-      /* update the target list if dependency is not used. */
-      dependency_iend = std::remove(dependency_iter, dependency_iend, *dependency_iter);
-      //dependency_iter = std::advance(std::begin(temp_target.dependencies), std::distance(dependency_iter, dependency_iend));
-      }
+    break;
     }
   ++iter;
   }
+    if (iter == iend){
+    /* update the target list if dependency is not used. */
+    temp_target.dependencies.erase(dependency_iter);
+    }
   }
 target_list.push_back(temp_target);
 }

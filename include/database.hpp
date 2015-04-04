@@ -11,6 +11,7 @@
 #include <typesystems/typesystem.hpp>
 #include <data_pattern/data_model.hpp>
 #include "target.hpp"
+#include "data_model_shared.hpp"
 #include "forma_database.hpp"
 
 namespace forma {

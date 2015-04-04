@@ -25,14 +25,6 @@ get_context_header(
 );
 
 template <typename charT, typename traits, typename allocator>
-basic_tag<charT,traits,allocator>
-get_tag(
-  std::basic_istream<charT,traits> &
-, charT /* end of record delimnator */
-, charT /* tag delimantor */
-);
-
-template <typename charT, typename traits, typename allocator>
 std::pair<basic_tag<charT,traits,allocator>
   , std::basic_string<charT,traits,allocator> >
 get_tag_value(

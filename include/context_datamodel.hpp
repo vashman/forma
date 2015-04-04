@@ -9,6 +9,7 @@
 #include <data_pattern/data_model.hpp>
 #include "tag.hpp"
 #include "flag.hpp"
+#include "data_model_shared.hpp"
 #include "forma_context.hpp"
 
 namespace forma {
