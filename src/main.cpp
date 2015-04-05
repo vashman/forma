@@ -18,12 +18,14 @@ using forma::empty;
 using forma::make_context;
 using forma::make_formadb;
 using forma::make_output;
+using forma::make_input;
 using forma::tag_t;
 using forma::flag_t;
 using forma::target_t;
 using forma::context_t;
 using forma::database_t;
 using forma::ostream_t;
+using forma::istream_t;
 
 typedef basic_string<forma::char_t, forma::traits_t> string_t;
 
@@ -128,12 +130,12 @@ auto current_target (begin(target_list))
 ostream_t build_file = make_output();
   if (!build_file && !(*build_file).stream){
   return 1;
-  }/*
-istream_t build_template = make_istream();
-  if (!build_template && !build_template.stream){
+  }
+istream_t build_template = make_input();
+  if (!build_template && !(*build_template).stream){
   return 1;
   }
-
+/*
 const int buffer_size = 127;
 char_t iobuffer[buffer_size];
 string_t buffer; // used to hold generated output

@@ -22,7 +22,7 @@ namespace forma {
 
 //typedef factory_loader::static_factory factory_t;
 typedef std::unique_ptr<ostream_plugin<char_t, traits_t> > ostream_t;
-//typedef std::unique_ptr<istream_plugin<> > istream_t;
+typedef std::unique_ptr<istream_plugin<char_t, traits_t> > istream_t;
 typedef std::shared_ptr<datamodel_plugin> datamodel_t;
 typedef std::shared_ptr<context_plugin> context_t;
 typedef basic_target<char_t, traits_t, std::allocator<char_t>, std::allocator<char_t>, std::allocator<char_t> > target_t;
@@ -149,8 +149,8 @@ make_formadb();
 context_t
 make_context();
 
-//istream_t
-//make_input();
+istream_t
+make_input();
 
 ostream_t
 make_output();

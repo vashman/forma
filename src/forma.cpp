@@ -7,6 +7,7 @@
 #include "../include/forma_context_plugin.hpp"
 #include "../include/forma_database_plugin.hpp"
 #include "../include/fostream_plugin.hpp"
+#include "../include/fistream_plugin.hpp"
 #include "../include/forma.hpp"
 
 std::fstream ff("context.forma"), fff("forma");
@@ -23,12 +24,12 @@ make_context(
 ){
 return std::make_shared<forma_context_plugin<char_t, traits_t> >(ff.rdbuf());
 }
-/*
+
 istream_t
 make_input(
 ){
-return
-}*/
+return istream_t(new fistream_plugin<char_t, traits_t>("output", std::ios_base::in));
+}
 
 ostream_t
 make_output(
