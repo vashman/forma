@@ -6,13 +6,15 @@
 #define FORMA_ISTREAM_PLUGIN_HPP
 
 namespace forma {
-
+/**/
+template <typename istreamT>
 class istream_plugin {
 public:
   virtual
-  ~istream_plugin();
+  ~istream_plugin(
+  ) = default;
 
-  std::basic_istream<char_t, traits_t> stream;
+  istreamT stream;
 };
 
 } /* forma */

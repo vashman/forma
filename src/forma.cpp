@@ -6,6 +6,7 @@
 #include <fstream>
 #include "../include/forma_context_plugin.hpp"
 #include "../include/forma_database_plugin.hpp"
+#include "../include/fostream_plugin.hpp"
 #include "../include/forma.hpp"
 
 std::fstream ff("context.forma"), fff("forma");
@@ -27,12 +28,12 @@ istream_t
 make_input(
 ){
 return
-}
+}*/
 
 ostream_t
 make_output(
 ){
-return
-}*/
+return ostream_t(new fostream_plugin<char_t, traits_t>("output", std::ios_base::out));
+}
 
 } /* forma */

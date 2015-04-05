@@ -13,16 +13,16 @@
 #include "target.hpp"
 #include "context_plugin.hpp"
 #include "database_plugin.hpp"
-//#include "istream_plugin.hpp"
-//#include "ostream_plugin.hpp"
+#include "istream_plugin.hpp"
+#include "ostream_plugin.hpp"
 //#define STATIC_FACTORY
 //#include <factory_loader/factory_loader.hpp>
 
 namespace forma {
 
 //typedef factory_loader::static_factory factory_t;
-//typedef std::unique_ptr<ostream_plugin> ostream_t;
-//typedef std::unique_ptr<istream_plugin> istream_t;
+typedef std::unique_ptr<ostream_plugin<char_t, traits_t> > ostream_t;
+//typedef std::unique_ptr<istream_plugin<> > istream_t;
 typedef std::shared_ptr<datamodel_plugin> datamodel_t;
 typedef std::shared_ptr<context_plugin> context_t;
 typedef basic_target<char_t, traits_t, std::allocator<char_t>, std::allocator<char_t>, std::allocator<char_t> > target_t;
@@ -152,8 +152,8 @@ make_context();
 //istream_t
 //make_input();
 
-//ostream_t
-//make_output();
+ostream_t
+make_output();
 
 } /* forma */
 #endif

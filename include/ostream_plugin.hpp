@@ -3,15 +3,31 @@
 #ifndef FORMA_OSTREAM_PLUGIN_HPP
 #define FORMA_OSTREAM_PLUGIN_HPP
 
+#include <ostream>
+
 namespace forma {
-
-class stream_plugin {
+/**/
+template <typename charT, typename traits>
+class ostream_plugin {
 public:
-  virtual
-  ~ostream_plugin();
+  /* ctor */
+  ostream_plugin(
+    std::basic_streambuf<charT,traits> *
+  );
 
-  std::basic_ostream<char_t, traits_t> stream;
+  virtual
+  ~ostream_plugin(
+  ) = default;
+
+  std::basic_ostream<charT,traits> stream;
 };
+
+template <typename charT, typename traits>
+ostream_plugin<charT,traits>::ostream_plugin(
+  std::basic_streambuf<charT,traits> * _buf
+)
+  : stream (_buf) {
+}
 
 } /* forma */
 #endif
