@@ -18,6 +18,18 @@ get_tag(
 , charT const /* tag delimantor */
 );
 
+/* check_header
+  charT should be the char type of the input iterator.
+*/
+template <typename charT, typename inputIt>
+bool
+check_header(
+  inputIt _begin
+, inputIt _end
+, charT const * const _header
+, std::size_t const _length
+);
+
 } /* forma */
 #include "bits/data_model_shared.tcc"
 #endif

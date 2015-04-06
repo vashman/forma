@@ -8,10 +8,11 @@
 #include <stdexcept>
 #include <string>
 #include <utility>
+#include <limits>
 
 namespace forma {
 /* get_tag
-get next tag from database
+  Get the next tag from the database stream
 */
 template <typename charT, typename traits, typename allocator>
 basic_tag<charT,traits,allocator>
@@ -29,6 +30,30 @@ std::basic_string<charT,traits,allocator> buffer;
          , ite);
   }
 throw std::runtime_error("Could not determine tag, database stream is not well formatted.");
+}
+
+/* check_header
+*/
+template <typename charT, typename inputIt>
+bool
+check_header(
+  inputIt _begin
+, inputIt _end
+, charT const * const _header
+, std::size_t const _length
+){
+std::size_t count;
+  for (
+    count = std::numeric_limits<std::size_t>::min()
+  ; (_begin != _end) && (count < _length)
+  ; ++count, ++_begin
+  ){
+    if ((*_begin) != _header[count]){
+    return false;    
+    }
+  }
+  if (count < _length) return false;
+return true;
 }
 
 } /* forma */

@@ -7,13 +7,20 @@
 #include <set>
 #include <stack>
 #include <string>
+#include <iterator>
 #include <data_pattern/data_model.hpp>
 #include "../include/forma.hpp"
 using std::set;
+using std::begin;
+using std::end;
 using std::basic_string;
 
 using data_pattern::data_model;
 
+using forma::char_t;
+using forma::traits_t;
+using forma::header;
+using forma::load_header;
 using forma::empty;
 using forma::make_context;
 using forma::make_formadb;
@@ -26,6 +33,7 @@ using forma::context_t;
 using forma::database_t;
 using forma::ostream_t;
 using forma::istream_t;
+using forma::check_header;
 
 typedef basic_string<forma::char_t, forma::traits_t> string_t;
 
@@ -135,23 +143,33 @@ istream_t build_template = make_input();
   if (!build_template && !(*build_template).stream){
   return 1;
   }
-/*
+
+std::istream_iterator<char_t> template_end;
+std::istream_iterator<char_t> template_iter((*build_template).stream);
+{ /* check header */
+char_t const * const forma_header_string = "forma header:";
+  if (!check_header(
+    template_iter
+  , template_end
+  , forma_header_string
+  , traits_t::length(forma_header_string)
+  )){
+  return 1;  
+  }
+} /* check header */
+header<char_t> head = load_header<char_t>(template_iter, template_end);
+
+string_t buffer; // used to hold generated output
 const int buffer_size = 127;
 char_t iobuffer[buffer_size];
-string_t buffer; // used to hold generated output
 
-  if (build_template.stream.read(iobuffer, buffer_size)){
-  return 1;
-  }
-header<char_t> head = prase_header(iobuffer, buffer_size);
-
-auto buffend = cend(iobuffer) / * end of entire buffer * /
-   , buffbegin = cbegin(iobuffer)
-   , buffiter = cbegin(iobuffer); / * current read position in buffer * /
+auto buffend (end(iobuffer)) /* end of entire buffer */
+   , buffbegin (begin(iobuffer))
+   , buffiter (begin(iobuffer)); /* current read position in buffer */
 
 bool statement_begin = false
    , statement_middle = false;
-
+/*
 / * read through stream * /
 while (build_template.read(iobuffer, buffer_size)){
   if (statement_begin == false){

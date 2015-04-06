@@ -15,6 +15,7 @@
 #include "database_plugin.hpp"
 #include "istream_plugin.hpp"
 #include "ostream_plugin.hpp"
+#include "data_model_shared.hpp"
 //#define STATIC_FACTORY
 //#include <factory_loader/factory_loader.hpp>
 
@@ -66,27 +67,21 @@ public:
   , block_delim; /* mark start and end of subsistution block */
 };
 
-/* load forma header */
-template <typename charT, typename traits>
+/* load_header
+  load forma header
+*/
+template <typename charT, typename inputIt>
 header<charT>
 load_header(
-  charT const * const _buffer
-, int const _buffer_size
+  inputIt _begin
+, inputIt _end
 ){
 header<charT> head;
-charT const header[6] = { };
-int const size = traits::length(header);
-  if (traits::compare(_buffer, "", size)
-      && (traits::size(_buffer) > (size+10))
-     ){
-  head.delim = _buffer[size+2];
-  head.target_sub = _buffer[size+4];
-  head.dependcy_sub = _buffer[size+6];
-  head.block_delim = _buffer[size+8];
-  head.context_sub = _buffer[size+10];
-  return head;
-  }
-throw ;
+if (_begin != _end) head.delim = *(++_begin);
+if (_begin != _end) head.target_sub = *(++(++_begin));
+if (_begin != _end) head.dependcy_sub = *(++(++_begin));
+if (_begin != _end) head.block_delim = *(++(++_begin));
+return head;
 }
 
 /* find tag in input stream segment */
