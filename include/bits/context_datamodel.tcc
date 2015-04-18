@@ -26,7 +26,7 @@ typesystems::set_typebuffer<
   basic_flag<charT,traits,flag_allocator>,flag_container>(this->typesys);
 /* set buffer for flags as std::basic_tag */
 typesystems::set_typebuffer<
-  basic_tag<charT,traits,tag_allocator>, tag_container>(this->typesys);
+  taxo::basic_tag<charT,traits,tag_allocator>, tag_container>(this->typesys);
 }
 
 /* context_datamodel dtor */
