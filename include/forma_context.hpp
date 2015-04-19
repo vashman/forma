@@ -5,8 +5,8 @@
 
 #include <istream>
 #include <string>
-#include <utility>
-#include "tag.hpp"
+#include <taxo\tag.hpp>
+#include "flag.hpp"
 
 namespace forma {
 /* context file header */
@@ -18,17 +18,32 @@ struct basic_context_header {
 };
 
 /* get database header and verify */
-template <typename charT, typename traits>
+template <
+  typename charT
+, typename traits
+>
 basic_context_header<charT>
 get_context_header(
   std::basic_istream<charT,traits> &
 );
 
-template <typename charT, typename traits, typename allocator>
-std::pair<basic_tag<charT,traits,allocator>
-  , std::basic_string<charT,traits,allocator> >
+/**/
+template <
+  typename charT
+, typename traits
+, typename allocator
+>
+basic_flag<
+  charT
+, traits
+, allocator
+>
 get_tag_value(
-  std::basic_string<charT,traits,allocator>
+  std::basic_string<
+    charT
+  , traits
+  , allocator
+  >
 , charT
 , charT
 );
