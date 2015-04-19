@@ -17,20 +17,36 @@ namespace forma {
 template <
   typename charT
 , typename traits
-, typename tag_allocator = std::allocator<charT>
-, typename flag_allocator = std::allocator<charT>
+, typename tag_allocator
+    = std::allocator<charT>
+, typename flag_allocator
+    = std::allocator<charT>
 >
-class context_datamodel : public data_pattern::data_model {
+class context_datamodel
+  : public data_pattern::data_model {
 public:
   /*ctor*/
   template <
-    typename tag_container = std::vector<
-               taxo::basic_tag<charT,traits,tag_allocator> >
-  , typename flag_container = std::vector<
-               basic_flag<charT,traits,flag_allocator> >
+    typename tag_container
+      = std::vector<
+          taxo::basic_tag<
+            charT
+          , traits
+          , tag_allocator>
+          >
+  , typename flag_container
+      = std::vector<
+          basic_flag<
+            charT
+          , traits
+          , flag_allocator>
+          >
   >
   context_datamodel(
-    std::basic_streambuf<charT,traits> *
+    std::basic_streambuf<
+      charT
+    , traits
+    > *
   ); 
 
   /*dtor*/
@@ -46,7 +62,8 @@ public:
   );
 
 private:
-  std::basic_istream<charT,traits> stream;
+  std::basic_istream<charT,traits>
+    stream;
 
   basic_context_header<charT> header;
 };
