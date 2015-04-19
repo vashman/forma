@@ -75,6 +75,7 @@ bool output = true;
 /* context information */
 set<tag_t> context_tags;
 set<flag_t> context_flags;
+
 { /* find context */
 context_t context (make_context());
   if (!context){
@@ -83,6 +84,7 @@ context_t context (make_context());
   }
 // Retrieve all context tags
 context->get_tags();
+
 { /* get tags */
 tag_t temp_tag;
 	while (!empty<tag_t>(context)){
@@ -90,6 +92,7 @@ tag_t temp_tag;
   context_tags.insert(temp_tag);
 	}
 } /* get tags*/
+
 { /* get flags */
 flag_t temp_flag;
   while(!empty<flag_t>(context)){
@@ -132,10 +135,11 @@ auto
 , dependency_iend
     (end(temp_target.dependencies));
 
-  while (dependency_iter
-         !=
-         dependency_iend
-        ){
+  while (
+    dependency_iter
+    !=
+    dependency_iend
+  ){
   auto
     iter
       (begin((*dependency_iter).second))
@@ -186,10 +190,11 @@ ostream_t build_file = make_output();
   return 1;
   }
 istream_t build_template = make_input();
-  if (!build_template
-      &&
-      !(*build_template).stream
-     ){
+  if (
+    !build_template
+    &&
+    !(*build_template).stream
+  ){
   return 1;
   }
 
@@ -201,15 +206,16 @@ istream_iterator<char_t> template_iter(
 { /* check header */
 char_t const * const forma_header_string
   = "forma header:";
-  if (!check_header(
-        template_iter
-      , template_end
-      , forma_header_string
-      , traits_t::length(
-          forma_header_string
-        )
+  if (
+    !check_header(
+      template_iter
+    , template_end
+    , forma_header_string
+    , traits_t::length(
+        forma_header_string
       )
-     ){
+    )
+  ){
   return 1;  
   }
 } /* check header */
