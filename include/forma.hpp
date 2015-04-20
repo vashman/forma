@@ -26,14 +26,18 @@ namespace forma {
 typedef std::unique_ptr<
   ostream_plugin<char_t, traits_t>
 > ostream_t;
+
 typedef std::unique_ptr<
   istream_plugin<char_t, traits_t>
 > istream_t;
+
 typedef std::shared_ptr<
   datamodel_plugin
 > datamodel_t;
+
 typedef std::shared_ptr<context_plugin>
   context_t;
+
 typedef basic_target<
   char_t
 , traits_t
@@ -41,6 +45,7 @@ typedef basic_target<
 , std::allocator<char_t>
 , std::allocator<char_t>
 > target_t;
+
 typedef std::shared_ptr<
   database_plugin<target_t>
 > database_t;
@@ -219,25 +224,6 @@ make_input();
 
 ostream_t
 make_output();
-
-/* output range */
-template <
-  typename T
-, typename idbIter
-, typename outputIter
->
-void
-output_range(
-  idbIter _iter
-, idbIter _end
-, outputIter _oiter
-, T _temp = T
-){
- 	while (_iter != _end){
-	 _temp = _iter;
-  _oiter = _temp;
- 	}
-}
 
 } /* forma */
 #include "bits/forma.tcc"

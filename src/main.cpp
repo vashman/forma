@@ -83,12 +83,19 @@ context_t context (make_context());
   }
 // Retrieve all context tags
 context->get_tags();
-find_context(
-  context
+copy(
+  idata_model_iterator<tag_t>(context)
+, idata_model_iterator<tag_t>()
 , inserter(
     begin (context_tags)
   , end (context_tags)
   )
+);
+
+context->get_flags();
+copy(
+  idata_model_iterator<flag_t>(context)
+, idata_model_iterator<flag_t>()
 , inserter(
     begin (context_flags)
   , end (context_flags)
