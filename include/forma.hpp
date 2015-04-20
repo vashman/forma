@@ -220,6 +220,42 @@ make_input();
 ostream_t
 make_output();
 
+/* find context */
+template <
+  typename charT
+, typename traits
+, typename allocator
+, typename outputIterTag
+, typename outputIterFlag
+>
+void
+find_context(
+  typesystems::data_model & _context
+, outputIterTag _otiter
+, outputIterFlag _ofiter
+){
+{ /* get tags */
+taxo::basic_tag<charT,traits,allocator>
+  temp_tag;
+	while (
+    !typesystems::empty<tag_t>(_context)
+  ){
+	_context >> temp_tag;
+  _otiter = temp_tag;
+	}
+} /* get tags*/
+
+{ /* get flags */
+flag_t temp_flag;
+  while(
+    !typesystems::empty<flag_t>(context)
+  ){
+  _context >> temp_flag;
+  _ofiter = temp_flag;
+  }
+} /* get flags */
+}
+
 } /* forma */
 #include "bits/forma.tcc"
 #endif

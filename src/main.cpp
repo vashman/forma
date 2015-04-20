@@ -76,7 +76,6 @@ bool output = true;
 set<tag_t> context_tags;
 set<flag_t> context_flags;
 
-{ /* find context */
 context_t context (make_context());
   if (!context){
   //fatal << "cout not create context database.";
@@ -84,23 +83,17 @@ context_t context (make_context());
   }
 // Retrieve all context tags
 context->get_tags();
-
-{ /* get tags */
-tag_t temp_tag;
-	while (!empty<tag_t>(context)){
-	context >> temp_tag;
-  context_tags.insert(temp_tag);
-	}
-} /* get tags*/
-
-{ /* get flags */
-flag_t temp_flag;
-  while(!empty<flag_t>(context)){
-  context >> temp_flag;
-  context_flags.insert(temp_flag);
-  }
-} /* get flags */
-} /* find context */
+find_context(
+  context
+, inserter(
+    begin (context_tags)
+  , end (context_tags)
+  )
+, inserter(
+    begin (context_flags)
+  , end (context_flags)
+  )
+);
 
 database_t db (make_formadb());
   if (!db){
@@ -145,30 +138,29 @@ auto
       (begin((*dependency_iter).second))
   , iend
       (end((*dependency_iter).second));
-  while (iter != iend){
-    /* filter next targets via tags */
-    if (std::find_if(
-          iter_tags
-        , iend_tags
-        , compare_tag(*iter)
-        )
-        !=
-        iend_tags
-    ){
-    target_queue
-      .push((*dependency_iter).first);
-    break;
-    }
-  ++iter;
-  }
-    if (iter == iend){
+  if (
+    any_of(
+      iter_tags
+    , iend_tags
+    , [iter, iend](auto _tag){
+      while (iter != iend){
+        if (*iter == _tag) return true;
+      ++iter;
+      }
+      return false;
+      }
+    )
+   ){
+   target_queue
+     .push((*dependency_iter).first);
+   } else {
     /* update the target list if
     dependency is not used.
     */
     temp_target.dependencies.erase(
       dependency_iter
     );
-    }
+   }
   }
 target_list.push_back(temp_target);
 }
