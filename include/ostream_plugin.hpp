@@ -7,8 +7,13 @@
 
 namespace forma {
 /**/
-template <typename charT, typename traits>
-class ostream_plugin {
+template <
+  typename charT
+, typename traits
+>
+class ostream_plugin
+ : public 
+    std::basic_ostream<charT,traits> {
 public:
   /* ctor */
   ostream_plugin(
@@ -19,14 +24,19 @@ public:
   ~ostream_plugin(
   ) = default;
 
-  std::basic_ostream<charT,traits> stream;
 };
 
-template <typename charT, typename traits>
-ostream_plugin<charT,traits>::ostream_plugin(
-  std::basic_streambuf<charT,traits> * _buf
+template <
+  typename charT
+, typename traits
+>
+ostream_plugin<charT,traits>
+::ostream_plugin(
+  std::basic_streambuf<charT,traits>
+    * _buf
 )
-  : stream (_buf) {
+  : std::basic_ostream<charT,traits>
+     (_buf) {
 }
 
 } /* forma */
