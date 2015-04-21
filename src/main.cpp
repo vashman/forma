@@ -184,7 +184,7 @@ auto
 ostream_t build_file (make_output());
   if (!build_file
       &&
-      !(*build_file).stream
+      !(*build_file)
      ){
   return 1;
   }
@@ -192,14 +192,14 @@ istream_t build_template (make_input());
   if (
     !build_template
     &&
-    !(*build_template).stream
+    !(*build_template)
   ){
   return 1;
   }
 
 istream_iterator<char_t> template_end;
 istream_iterator<char_t> template_iter(
-  (*build_template).stream
+  (*build_template)
 );
 
 { /* check header */
@@ -228,7 +228,7 @@ header<char_t> head
 /* read through stream */
 vector<char_t> buffer;
 ostream_iterator<char_t> build_iter(
-  (*build_file).stream
+  (*build_file)
 );
 back_insert_iterator<vector<char_t> >
   buff_insert(buffer);
