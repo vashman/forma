@@ -181,14 +181,14 @@ auto
   current_target (begin(target_list))
 , end_current_target (end(target_list));
 
-ostream_t build_file = make_output();
+ostream_t build_file (make_output());
   if (!build_file
       &&
       !(*build_file).stream
      ){
   return 1;
   }
-istream_t build_template = make_input();
+istream_t build_template (make_input());
   if (
     !build_template
     &&
