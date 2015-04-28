@@ -8,20 +8,25 @@
 
 namespace forma {
 
-class context_plugin : public datamodel_plugin {
+class context_plugin
+  : public datamodel_plugin {
 public:
+  /* ctor */
   context_plugin(
     data_pattern::data_model &
   );
 
+  /* dtor */
   virtual
   ~context_plugin(
   );
 
+  /* get_tags */
   void
   get_tags(
   );
 
+  /* get_flags */
   void
   get_flags(
   );
