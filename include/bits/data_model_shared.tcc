@@ -14,11 +14,20 @@ namespace forma {
 /* get_tag
   Get the next tag from the database stream
 */
-template <typename charT, typename traits, typename allocator>
-basic_tag<charT,traits,allocator>
+template <
+  typename charT
+, typename traits
+, typename allocator
+, typename inputIter
+>
+basic_tag<
+  charT
+, traits
+, allocator
+>
 get_tag(
-  std::basic_istream<charT,traits> & _stream
-, charT const _record_delim /* end of record delimnator */
+  inputIter _first
+, inputIter _last
 , charT const _tag_delim
 ){
 std::basic_string<charT,traits,allocator> buffer;
@@ -29,12 +38,16 @@ std::basic_string<charT,traits,allocator> buffer;
          , std::find(itb, ite, _tag_delim)
          , ite);
   }
+std::copy(_first,_last,);
 throw std::runtime_error("Could not determine tag, database stream is not well formatted.");
 }
 
 /* check_header
 */
-template <typename charT, typename inputIt>
+template <
+  typename charT
+, typename inputIt
+>
 bool
 check_header(
   inputIt _begin

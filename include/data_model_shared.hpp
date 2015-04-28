@@ -4,16 +4,22 @@
 #define FORMA_DATA_MODEL_SHARED_HPP
 
 #include <istream>
-#include "tag.hpp"
+#include <taxo\tag.hpp>
 
 namespace forma {
 /* get_tag
 retrieves the next element as a tag.
 */
-template <typename charT, typename traits, typename allocator>
-basic_tag<charT,traits,allocator>
+template <
+  typename charT
+, typename traits
+, typename allocator
+, typename inputIter
+>
+taxo::basic_tag<charT,traits,allocator>
 get_tag(
-  std::basic_istream<charT,traits> &
+  inputIter
+, inputIter
 , charT const /* end of record delimnator */
 , charT const /* tag delimantor */
 );
@@ -21,7 +27,10 @@ get_tag(
 /* check_header
   charT should be the char type of the input iterator.
 */
-template <typename charT, typename inputIt>
+template <
+  typename charT
+, typename inputIt
+>
 bool
 check_header(
   inputIt _begin
