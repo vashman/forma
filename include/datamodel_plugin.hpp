@@ -11,13 +11,22 @@ namespace forma {
 /* datamodel_plugin */
 class datamodel_plugin {
 public:
+  /* ctor */
   datamodel_plugin(
     data_pattern::data_model &
   );
 
+  /* dtor */
   virtual
-  ~datamodel_plugin(){}
+  ~datamodel_plugin(
+  );
 
+  /* */
+  operator data_pattern::data_model &(
+  ) const ;
+
+protected:
+  /**/
   data_pattern::data_model & db;
 };
 
@@ -57,5 +66,14 @@ operator>>(
 return operator>>(_mdl->db, _var);
 }
 
+/**/
+template <typename T>
+datamodel_plugin<T>::operator
+  data_pattern::data_model &(
+){
+return this->db;
+}
+
 } /* forma */
+#include "bits\datamodel_plugin.hpp"
 #endif

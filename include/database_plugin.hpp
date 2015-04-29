@@ -8,21 +8,26 @@
 
 namespace forma {
 template <typename targetT>
-class database_plugin : public datamodel_plugin {
+class database_plugin
+  : public datamodel_plugin {
 public:
+  /* ctor */
   database_plugin(
     data_pattern::data_model &
   );
 
+  /* dtor */
   virtual
   ~database_plugin(
   );
 
+  /**/
   void
   next_target(
     targetT const &
   );
 
+  /**/
   void
   next_target(
   );
