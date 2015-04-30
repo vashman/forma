@@ -121,6 +121,24 @@ auto
   iter_tags(begin(context_tags))
 , iend_tags(end(context_tags));
 
+for (
+    target_t temp_target
+  ; !empty<target_t>(db)
+  ; temp_target = target_queue.top()
+){
+target_queue.pop();
+db >> temp_target;
+std::for_each(
+  begin (temp_target.dependencies)
+, end (temp_target.dependencies)
+, f
+);
+  if (f.result())
+    t
+  else
+    erase
+}
+
 for (target_t temp_target
     ; !empty<target_t>(db)
     ; temp_target.target
@@ -182,10 +200,7 @@ auto
 , end_current_target (end(target_list));
 
 ostream_t build_file (make_output());
-  if (!build_file
-      &&
-      !(*build_file)
-     ){
+  if (!build_file && !(*build_file)){
   return 1;
   }
 istream_t build_template (make_input());
