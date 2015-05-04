@@ -108,86 +108,58 @@ database_t db (make_formadb());
   }
 
 db->next_target();
+idata_model_iterator<target_t>
+  db_end, db_begin(db);
+
+  if (db_end != db_begin)
+  return 1;
+
 /* List of all targets loaded. */
-vector<target_t> target_list;
-/* queue of the next dependency of the
-current target to look up.
-*/
-std::stack<
-  target_t::dependency_container
-    ::key_type
-> target_queue;
+map<target_t, vector<target_t> >
+  target_list;
+
 auto
-  iter_tags(begin(context_tags))
-, iend_tags(end(context_tags));
+  context_begin(begin(context_tags))
+, context_end(end(context_tags));
 
-for (
-    target_t temp_target
-  ; !empty<target_t>(db)
-  ; temp_target = target_queue.top()
-){
-target_queue.pop();
-db >> temp_target;
-std::for_each(
-  begin (temp_target.dependencies)
-, end (temp_target.dependencies)
-, f
-);
-  if (f.result())
-    t
-  else
-    erase
-}
+auto iter(begin(target_list));
+ 
+/* Retrive vaild targets. */
+while (db_begin != db_end){
+iter = target_list.insert(*db_begin);
 
-for (target_t temp_target
-    ; !empty<target_t>(db)
-    ; temp_target.target
-        = target_queue.top()
-     , db->next_target(temp_target)
-     , target_queue.pop()
-){
-db >> temp_target;
-auto
-  dependency_iter
-    (begin(temp_target.dependencies))
-, dependency_iend
-    (end(temp_target.dependencies));
-
-  while (
-    dependency_iter
-    !=
-    dependency_iend
-  ){
-  auto
-    iter
-      (begin((*dependency_iter).second))
-  , iend
-      (end((*dependency_iter).second));
   if (
-    any_of(
-      iter_tags
-    , iend_tags
-    , [iter, iend](auto _tag){
-      while (iter != iend){
-        if (*iter == _tag) return true;
-      ++iter;
-      }
-      return false;
-      }
+    !validate_target(
+      begin(iter.first->tags)
+    , end(iter.first->tags)
+    , context_begin
+    , context_end
     )
-   ){
-   target_queue
-     .push((*dependency_iter).first);
-   } else {
-    /* update the target list if
-    dependency is not used.
-    */
-    temp_target.dependencies.erase(
-      dependency_iter
-    );
-   }
+  ){
+  /* remove target from list */
+  target_list.remove(*iter);
+  continue;
   }
-target_list.push_back(temp_target);
+/* Retrive targets and map them to
+parent targets
+*/
+db->next_dependency(*iter->first);
+  while (db_begin != db_end){
+  (iter->second).push_back(*db_begin);
+    if (
+      !validate_target(
+        begin(iter.second)//
+      , end(iter.second)//
+      , context_begin
+      , context_end
+      )
+    ){
+    /* remove target from list */
+    iter->second.remove(*);
+    continue;
+    } 
+  db->next_dependency(*iter);
+  }
 }
 
   /* quit if not outputting */
@@ -206,7 +178,7 @@ ostream_t build_file (make_output());
 istream_t build_template (make_input());
   if (
     !build_template
-    &&
+  &&
     !(*build_template)
   ){
   return 1;

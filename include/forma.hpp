@@ -225,6 +225,30 @@ make_input();
 ostream_t
 make_output();
 
+template <
+  typename inputIter
+, typename FwdIter
+>
+bool
+validate_target(
+  inputIter _begin
+, inputIter _end
+, FwdIter _begin2
+, FwdIter _end2
+){
+  if (_begin == _end) return true;
+return (
+  tag_end
+!=
+  find_first_of(
+    _begin
+  , _end
+  , _begin2
+  , _end2
+  )
+);
+}
+
 } /* forma */
 #include "bits/forma.tcc"
 #endif
