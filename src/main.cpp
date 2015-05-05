@@ -121,13 +121,14 @@ map<target_t, vector<target_t> >
 auto
   context_begin(begin(context_tags))
 , context_end(end(context_tags));
-
-auto iter(begin(target_list));
  
 /* Retrive vaild targets. */
-while (db_begin != db_end){
+for (
+    auto iter(begin(target_list))
+  ; db_begin != db_end
+  ; db->next_target(), ++db_begin
+){
 iter = target_list.insert(*db_begin);
-
   if (
     !validate_target(
       begin(iter.first->tags)
@@ -140,25 +141,36 @@ iter = target_list.insert(*db_begin);
   target_list.remove(*iter);
   continue;
   }
-/* Retrive targets and map them to
-parent targets
+/* Retrive targets
 */
 db->next_dependency(*iter->first);
-  while (db_begin != db_end){
-  (iter->second).push_back(*db_begin);
+  for(
+    auto depen_iter(
+      back_inserter(iter->second)
+    )
+  ; db_begin != db_end
+  ; ++db_begin
+  ){
+  dpen_iter = *db_begin;
+  }
+  for (
+    auto depeniter(begin(iter->second))
+    , enditer(end(iter->second))
+  ; depeniter != enditer
+  ; ++depeniter
+  ){
     if (
-      !validate_target(
-        begin(iter.second)//
-      , end(iter.second)//
+      validate_target(
+        depeniter
+      , enditer
       , context_begin
       , context_end
       )
     ){
-    /* remove target from list */
-    iter->second.remove(*);
     continue;
-    } 
-  db->next_dependency(*iter);
+    }
+  iter->second.remove(depeniter);
+  
   }
 }
 
