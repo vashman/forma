@@ -50,33 +50,6 @@ typedef std::shared_ptr<
   database_plugin<target_t>
 > database_t;
 
-/* tag_compare functor */
-/*template <typename InputIt>
-class tag_compare {
-public:
-  tag_compare(
-    InputIt begin
-  , InputIt end
-  );
-
-  *//* compare functor operator */
-  /*bool
-  operator(
-    tag_t
-  );
-
-private:
-  begin, end;
-};
-
-*/
-/*template <typename InputIt>
-tag_compare<InputIt>::operator()(
-  tag _tag
-){
-return _tag.compare(this->begin, this->end);
-}*/
-
 /* header
   Header information for template file.
 */
@@ -84,18 +57,13 @@ template <typename charT>
 class header {
 public:
   bool reverse;
-  /* new line delim */
-  charT delim
- /* current target subsistution token */
-, target_sub
-  /* current dependicy subsistution
-  token
-  */
-, dependcy_sub
-  /* mark start and end of subsistution
-  block.
-  */
-, block_delim;
+  charT delim /* new line delim */
+, target_sub /* current target
+    subsistution token. */
+, dependcy_sub /* current dependicy
+    subsistution token. */ 
+, block_delim; /* mark start and end
+    of subsistution block. */
 };
 
 /* load_header
@@ -172,7 +140,8 @@ validate_tag(
   return std::any_of(
     _list_first
   , _list_last
-  , _pred);
+  , _pred
+  );
   } else if (_flag == _delim_exclusive){
   return std::none_of(
     _list_first
@@ -187,20 +156,14 @@ return false;
 */
 template <
   typename InputIt
-, typename charT
-, typename traits
-, typename tagalloc
+, typename tagT
 >
 InputIt
 find_replacement(
   InputIt _first
 , InputIt _last
 , InputIt & _default
-, forma::basic_tag<
-    charT
-  , traits
-  , tagalloc
-  > const & _tag
+, tagT const & _tag
 ){
 _first = std::find(_first, _last, _tag);
   if (_first != _last){
@@ -210,7 +173,7 @@ return _default;
 }
 
 /* Factory functions for creating
-plugin types.
+  plugin types.
 */
 
 database_t 
@@ -225,29 +188,22 @@ make_input();
 ostream_t
 make_output();
 
+/* validate_target
+  Checks whether a target is vaild by
+  comparing its tags and whether if it
+  has tags.
+*/
 template <
-  typename inputIter
+  typename InputIter
 , typename FwdIter
 >
 bool
 validate_target(
-  inputIter _begin
-, inputIter _end
+  InputIter _begin
+, InputIter _end
 , FwdIter _begin2
 , FwdIter _end2
-){
-  if (_begin == _end) return true;
-return (
-  tag_end
-!=
-  find_first_of(
-    _begin
-  , _end
-  , _begin2
-  , _end2
-  )
 );
-}
 
 } /* forma */
 #include "bits/forma.tcc"

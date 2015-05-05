@@ -1,9 +1,35 @@
 //
 
+//          Copyright Sundeep S. Sangha 2013 - 2014.
+
 #ifndef FORMA_FORMA_TCC
 #define FORMA_FORMA_TCC
 
 namespace forma {
+/**/
+template <
+  typename InputIter
+, typename FwdIter
+>
+bool
+validate_target(
+  InputIter _begin
+, InputIter _end
+, FwdIter _begin2
+, FwdIter _end2
+){
+  if (_begin == _end) return true;
+return (
+  tag_end
+!=
+  find_first_of(
+    _begin
+  , _end
+  , _begin2
+  , _end2
+  )
+);
+}
 
 /* output_until
 Output iterator value to output until

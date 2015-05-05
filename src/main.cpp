@@ -153,12 +153,10 @@ db->next_dependency(*iter->first);
   ){
   dpen_iter = *db_begin;
   }
-  for (
-    auto depeniter(begin(iter->second))
+auto depeniter(begin(iter->second))
     , enditer(end(iter->second))
-  ; depeniter != enditer
-  ; ++depeniter
-  ){
+
+  while (depeniter != enditer){
     if (
       validate_target(
         depeniter
@@ -167,10 +165,11 @@ db->next_dependency(*iter->first);
       , context_end
       )
     ){
+    ++depeniter
     continue;
     }
-  iter->second.remove(depeniter);
-  
+  depeniter
+    = iter->second.erase(depeniter);
   }
 }
 

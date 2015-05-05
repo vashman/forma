@@ -8,12 +8,10 @@
 
 namespace forma {
 /**/
-template <typename charT, typename traits, typename allocator>
+template <typename allocator>
 using basic_flag
   = taxo::realtionship <
-      taxo::catagory<charT,traits,allocator>
-    , charT
-    , traits
+      taxo::catagory<allocator>
     , allocator
   >;
 

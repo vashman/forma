@@ -29,25 +29,19 @@ public:
   template <
     typename tag_container
       = std::vector<
-          taxo::basic_tag<
-            charT
-          , traits
-          , tag_allocator>
-          >
+          taxo::basic_tag<tag_allocator>
+        >
   , typename flag_container
       = std::vector<
           basic_flag<
             charT
           , traits
-          , flag_allocator>
+          ,flag_allocator>
           >
   >
   context_datamodel(
-    std::basic_streambuf<
-      charT
-    , traits
-    > *
-  ); 
+    std::basic_streambuf<charT, traits>*
+  );
 
   /*dtor*/
   ~context_datamodel(
