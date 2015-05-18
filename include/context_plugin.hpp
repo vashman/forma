@@ -33,13 +33,16 @@ public:
 
 protected:
   /* do_get_tags
-  The returned bool value reports an error when set to false.
+    The returned bool value reports an
+    error when set to false.
   nothrow
   */
   virtual bool
   do_get_tags(
   ) = 0;
 
+  /* do_get_flags
+  */
   virtual bool
   do_get_flags(
   ) = 0;
