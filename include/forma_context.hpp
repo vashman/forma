@@ -6,7 +6,6 @@
 #include <istream>
 #include <string>
 #include <taxo\tag.hpp>
-#include "flag.hpp"
 
 namespace forma {
 /* context file header */
@@ -17,7 +16,9 @@ struct basic_context_header {
   charT section_delim = '\n';
 };
 
-/* get database header and verify */
+/* get_context_header
+  Get database header and verify
+*/
 template <
   typename charT
 , typename traits
@@ -27,13 +28,14 @@ get_context_header(
   std::basic_istream<charT,traits> &
 );
 
-/**/
+/* get_tag_value
+*/
 template <
   typename charT
 , typename traits
 , typename allocator
 >
-basic_flag<
+flag_t<
   charT
 , traits
 , allocator

@@ -3,63 +3,54 @@
 #ifndef FORMA_CONTEXT_DATAMODEL_HPP
 #define FORMA_CONTEXT_DATAMODEL_HPP
 
-#include <streambuf>
-#include <istream>
 #include <vector>
 #include <data_pattern/data_model.hpp>
-#include <taxo/tag.hpp>
-#include "flag.hpp"
 #include "data_model_shared.hpp"
 #include "forma_context.hpp"
 
 namespace forma {
 /* context_datamodel */
 template <
-  typename charT
-, typename traits
-, typename tag_allocator
-    = std::allocator<charT>
-, typename flag_allocator
-    = std::allocator<charT>
+  typename streamT
+, typename tagT
+, typename flagT
 >
 class context_datamodel
   : public data_pattern::data_model {
 public:
-  /*ctor*/
+  /* ctor */
   template <
     typename tag_container
-      = std::vector<
-          taxo::basic_tag<tag_allocator>
-        >
+      = std::vector<tagT>
   , typename flag_container
-      = std::vector<
-          basic_flag<
-            charT
-          , traits
-          ,flag_allocator>
-          >
+      = std::vector<flagT>
+  , typename streambufT
   >
   context_datamodel(
-    std::basic_streambuf<charT, traits>*
+    streambufT
   );
 
-  /*dtor*/
+  /* dtor */
   ~context_datamodel(
   );
 
+  /* get_tags */
   void
   get_tags(
   );
 
+  /* get_flags */
   void
   get_flags(
   );
 
 private:
-  std::basic_istream<charT,traits>
-    stream;
+  streamT stream;
 
-  basic_context_header<charT> header;
+  basic_context_header<
+    typename streamT::char_type
+  >
+  header;
 };
 
 } /* forma */

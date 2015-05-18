@@ -17,7 +17,7 @@ class istream_plugin
   : public std::basic_istream<
       charT
     , traits
-    >{
+    > {
 public:
   /* ctor */
   istream_plugin(

@@ -16,3 +16,16 @@ else
 ^CC^
 fi
 }^...
+
+forma header: * ^ % + - < >
+* Comments start with a star since above it is first a star / asterisk.
+* Then the tag delinator comes set as ^, which is used to start a stop a
+*  tag plus the search options.
+* C
+* Search options com
+* Processing blocks
+#!/bin/sh
+// Complier variable with value set by tag
+<
+CC=^CC%Complier^-no compile^
+>

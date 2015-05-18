@@ -1,4 +1,4 @@
-// forma_database plugin implementation
+// forma_database plug-in implementation
 
 #ifndef FORMA_FORMA_DATABASE_PLUGIN_HPP
 #define FORMA_FORMA_DATABASE_PLUGIN_HPP
@@ -8,9 +8,15 @@
 
 namespace forma {
 /**/
-template <typename charT, typename traits, typename targetT>
-class forma_database_plugin : public database_plugin<targetT> {
+template <
+  typename charT
+, typename traits
+, typename targetT
+>
+class forma_database_plugin
+  : public database_plugin<targetT> {
 public:
+  /* ctor */
   forma_database_plugin(
     std::basic_streambuf<charT,traits> *
   );

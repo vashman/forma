@@ -1,6 +1,6 @@
 // forma lib header
 
-//          Copyright Sundeep S. Sangha 2013 - 2014.
+//          Copyright Sundeep S. Sangha 2013 - 2015.
 
 #ifndef FORMA_FORMA_HPP
 #define FORMA_FORMA_HPP
@@ -23,11 +23,11 @@
 namespace forma {
 
 //typedef factory_loader::static_factory factory_t;
-typedef std::unique_ptr<
+typedef std::shared_ptr<
   ostream_plugin<char_t, traits_t>
 > ostream_t;
 
-typedef std::unique_ptr<
+typedef std::shared_ptr<
   istream_plugin<char_t, traits_t>
 > istream_t;
 
@@ -39,11 +39,8 @@ typedef std::shared_ptr<context_plugin>
   context_t;
 
 typedef basic_target<
-  char_t
-, traits_t
-, std::allocator<char_t>
-, std::allocator<char_t>
-, std::allocator<char_t>
+  std::basic_string<char_t, traits_t>
+, tag_t
 > target_t;
 
 typedef std::shared_ptr<
@@ -57,13 +54,19 @@ template <typename charT>
 class header {
 public:
   bool reverse;
-  charT delim /* new line delim */
-, target_sub /* current target
-    subsistution token. */
-, dependcy_sub /* current dependicy
-    subsistution token. */ 
-, block_delim; /* mark start and end
-    of subsistution block. */
+  /* new line deliminator */
+  charT delim
+  /* current target substitution token.
+  */
+, target_sub
+  /* current dependency substitution
+    token.
+  */
+, dependcy_sub
+  /* mark start and end of substitution
+    block.
+  */  
+, block_delim;
 };
 
 /* load_header
@@ -79,13 +82,13 @@ load_header(
 , inputIt _end
 ){
 header<charT> head;
-if (_begin != _end)
+  if (_begin != _end)
   head.delim = *(++_begin);
-if (_begin != _end)
+  if (_begin != _end)
   head.target_sub = *(++(++_begin));
-if (_begin != _end)
+  if (_begin != _end)
   head.dependcy_sub = *(++(++_begin));
-if (_begin != _end)
+  if (_begin != _end)
   head.block_delim = *(++(++_begin));
 return head;
 }

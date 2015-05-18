@@ -12,33 +12,31 @@
 
 namespace forma {
 /* get_tag
-  Get the next tag from the database stream
+  Get the next tag from the database
+  stream.
 */
 template <
-  typename charT
+  typename tagT
+, typename charT
 , typename traits
-, typename allocator
-, typename inputIter
+, typename alloc
 >
-basic_tag<
-  charT
-, traits
-, allocator
->
+tagT
 get_tag(
-  inputIter _first
-, inputIter _last
-, charT const _tag_delim
+  std::basic_istream<
+    charT
+  , traits
+  , alloc
+  > & _stream
+, delimT const _delim
 ){
-std::basic_string<charT,traits,allocator> buffer;
-  if (std::getline(_stream, buffer, _record_delim)){
-  auto itb = std::begin(buffer), ite = std::end(buffer);
-  return basic_tag<charT,traits,allocator>(
-           itb
-         , std::find(itb, ite, _tag_delim)
-         , ite);
+std::basic_string<charT,traits,alloc>
+  buff;
+  if (
+    std::getline(_stream, buff, _delim)
+  ){
+  return tagT(buff.c_str());
   }
-std::copy(_first,_last,);
 throw std::runtime_error("Could not determine tag, database stream is not well formatted.");
 }
 
@@ -55,15 +53,19 @@ check_header(
 , charT const * const _header
 , std::size_t const _length
 ){
-std::size_t count;
-  for (
-    count = std::numeric_limits<std::size_t>::min()
-  ; (_begin != _end) && (count < _length)
-  ; ++count, ++_begin
+std::size_t count (
+ std::numeric_limits<std::size_t>::min()
+);
+  while (
+    (_begin != _end)
+  &&
+    (count < _length)
   ){
     if ((*_begin) != _header[count]){
-    return false;    
+    return false;
     }
+  ++count;
+  ++_begin;
   }
   if (count < _length) return false;
 return true;

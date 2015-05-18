@@ -18,18 +18,27 @@ struct basic_database_header {
   charT delim = '\n';
 };
 
-/**/
-template <typename charT, typename traits>
+/* get_database_header
+  Get database header using istream.
+*/
+template <
+  typename charT
+, typename traits
+>
 basic_database_header<charT>
 get_database_header(
   std::basic_istream<charT,traits> &
 );
 
 /* is_tag
-Checks from the current stream position if the next line is a tag by
-checking the next character.
+  Checks from the current stream
+  position if the next line is a tag by
+  checking the next character.
 */
-template <typename charT, typename traits>
+template <
+  typename charT
+, typename traits
+>
 bool
 is_tag(
   std::basic_istream<charT,traits> &
@@ -37,17 +46,26 @@ is_tag(
 );
 
 /* is_sub_element
-Checks whether the next element is a sub-element of the last record.
+  Checks whether the next element is a
+  sub-element of the last record.
 */
-template <typename charT, typename traits>
+template <
+  typename charT
+, typename traits
+>
 bool
 is_sub_element(
   std::basic_istream<charT,traits> &
 , charT const _sub_element_delim
 );
 
-/* get_sub_element */
-template <typename charT, typename traits, typename alloc>
+/* get_sub_element
+*/
+template <
+  typename charT
+, typename traits
+, typename alloc
+>
 std::basic_string<charT,traits,alloc>
 get_sub_element(
   std::basic_istream<charT,traits> &

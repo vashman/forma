@@ -8,103 +8,74 @@
 namespace forma {
 /* context_datamodel ctor */
 template <
-  typename charT
-, typename traits
-, typename tag_allocator
-, typename flag_allocator
+  typename streamT
+, typename tagT
+, typename flagT
 >
 template <
   typename tag_container
 , typename flag_container
+, typename streambufT
 >
-context_datamodel<
-  charT
-, traits
-, tag_allocator
-, flag_allocator
->
+context_datamodel<streamT, tagT, flagT>
   ::context_datamodel
 (
-  std::basic_streambuf<charT,traits>
-    * _buffer
+   streambufT _buffer
 )
   : stream (_buffer)
   , header (
       get_context_header(this->stream)
   ) {
 /* set buffer for tags as
-forma::basic_flag
+  forma::basic_flag
 */
 typesystems::set_typebuffer<
-  basic_flag<
-    charT
-  , traits
-  , flag_allocator
-  >
-, flag_container>(this->typesys);
+  flagT
+, flag_container
+>
+(this->typesys);
 /* set buffer for flags as
-std::basic_tag
+  std::basic_tag
 */
 typesystems::set_typebuffer<
-  taxo::basic_tag<
-    charT
-  , traits
-  , tag_allocator
-  >
-, tag_container>(this->typesys);
+  tagT
+, tag_container
+>
+(this->typesys);
 }
 
 /* context_datamodel dtor */
 template <
-  typename charT
-, typename traits
-, typename tag_allocator
-, typename flag_allocator
+  typename streamT
+, typename tagT
+, typename flagT
 >
-context_datamodel<
-  charT
-, traits
-, tag_allocator
-, flag_allocator
->
+context_datamodel<streamT, tagT, flagT>
   ::~context_datamodel(
 ){
 }
 
 /* context_datamodel get_tags */
 template <
-  typename charT
-, typename traits
-, typename tag_allocator
-, typename flag_allocator
+  typename streamT
+, typename tagT
+, typename flagT
 >
 void
-context_datamodel<
-  charT
-, traits
-, tag_allocator
-, flag_allocator
->
+context_datamodel<streamT, tagT, flagT>
   ::get_tags(
 ){
 auto & buff
-  = typesystems::use_typebuffer<
-    basic_tag<
-      charT
-    , traits
-    , tag_allocator
-    >
-  >(this->typesys);
+  = typesystems::use_typebuffer<tag>
+  (this->typesys);
 
-  while (stream.peek()
-        !=
-        this->header.section_delim) {
+  while (
+    stream.peek()
+  !=
+    this->header.section_delim
+  ) {
   buff.push(
-    get_tag<
-      charT
-    , traits
-    , tag_allocator
-    >(
+    get_tag<tagT>(
       this->stream
     , this->header.section_delim
     , this->header.seperator_delim
@@ -115,35 +86,25 @@ auto & buff
 
 /* context_datamodel get_flags */
 template <
-  typename charT
-, typename traits
-, typename tag_allocator
-, typename flag_allocator
+  typename streamT
+, typename tagT
+, typename flagT
 >
 void
-context_datamodel<
-  charT
-, traits
-, tag_allocator
-, flag_allocator
->
+context_datamodel<streamT, tagT, flagT>
   ::get_flags(
 ){
 auto & buff
-  = typesystems::use_typebuffer<
-      basic_flag<
-        charT
-      , traits
-      , flag_allocator
-      >
-  >(this->typesys);
+  = typesystems::use_typebuffer<flagT>
+  (this->typesys);
 
 this->stream.get();
-  while (this->stream.peek()
-        !=
-        traits::to_int_type(
-          this->header.section_delim
-         )
+  while (
+    this->stream.peek()
+  !=
+    traits::to_int_type(
+      this->header.section_delim
+    )
   ){
   buff.push(
     get_tag_value<

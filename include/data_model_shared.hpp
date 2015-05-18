@@ -8,20 +8,22 @@
 
 namespace forma {
 /* get_tag
-retrieves the next element as a tag.
+  Retrieves the next element as a tag.
 */
 template <
-  typename charT
+  typename tagT
+, typename charT
 , typename traits
-, typename allocator
-, typename inputIter
+, typename alloc
 >
 taxo::basic_tag<charT,traits,allocator>
 get_tag(
-  inputIter
-, inputIter
-, charT const /* end of record delimnator */
-, charT const /* tag delimantor */
+  std::basic_istream<
+    charT
+  , traits
+  , alloc
+  > &
+, delimT const _delim
 );
 
 /* check_header

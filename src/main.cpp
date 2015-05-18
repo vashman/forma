@@ -2,7 +2,7 @@
 // and produce a build script via the combination of a template build
 // script.
 
-//          Copyright Sundeep S. Sangha 2013 - 2014.
+//          Copyright Sundeep S. Sangha 2013 - 2015.
 
 #include <set>
 #include <vector>
@@ -69,7 +69,9 @@ private:
 };
 
 int main(int argc, char* argv[]) {
-bool direction = false; // io direction
+/* If true, output result to output
+  stream.
+*/
 bool output = true;
 
 /* context information */
@@ -122,7 +124,7 @@ auto
   context_begin(begin(context_tags))
 , context_end(end(context_tags));
  
-/* Retrive vaild targets. */
+/* Retrieve valid targets. */
 for (
     auto iter(begin(target_list))
   ; db_begin != db_end
