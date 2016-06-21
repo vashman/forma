@@ -1,4 +1,5 @@
-// forma context data_model
+// Read context data from forma data
+// base file,
 
 #ifndef FORMA_CONTEXT_DATAMODEL_HPP
 #define FORMA_CONTEXT_DATAMODEL_HPP

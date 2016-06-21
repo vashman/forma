@@ -23,11 +23,7 @@ template <
 >
 tagT
 get_tag(
-  std::basic_istream<
-    charT
-  , traits
-  , alloc
-  > & _stream
+  istreamT & _stream
 , delimT const _delim
 ){
 std::basic_string<charT,traits,alloc>
@@ -38,6 +34,19 @@ std::basic_string<charT,traits,alloc>
   return tagT(buff.c_str());
   }
 throw std::runtime_error("Could not determine tag, database stream is not well formatted.");
+}
+
+template <
+  typename T
+, typename :bufferT = 
+, typename inputIt
+>
+void
+get_type(
+  inputIt _begin
+, inputIt _end
+){
+  while (
 }
 
 /* check_header

@@ -1,9 +1,12 @@
-// holds associations between targets & dependences
+// Holds the associations between
+// targets and their dependences.
 
 //          Copyright Sundeep S. Sangha 2013 - 2014.
 
 #ifndef FORMA_TARGET_HPP
 #define FORMA_TARGET_HPP
+
+#include <vector>
 
 namespace forma {
 /**/
@@ -13,6 +16,9 @@ template <
 >
 class basic_target{
 public:
+  typedef tagT tag_type;
+  typedef stringT string_type;
+
   /* ctor */
   basic_target(
   ) = default;

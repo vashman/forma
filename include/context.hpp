@@ -1,24 +1,22 @@
 // forma context data_model plugin
 
-#ifndef FORMA_CONTEXT_PLUGIN_HPP
-#define FORMA_CONTEXT_PLUGIN_HPP
+#ifndef FORMA_CONTEXT_HPP
+#define FORMA_CONTEXT_HPP
 
 #include <data_pattern/data_model.hpp>
-#include "datamodel_plugin.hpp"
 
 namespace forma {
 
-class context_plugin
-  : public datamodel_plugin {
+class context {
 public:
   /* ctor */
-  context_plugin(
+  context(
     data_pattern::data_model &
   );
 
   /* dtor */
   virtual
-  ~context_plugin(
+  ~context(
   );
 
   /* get_tags */

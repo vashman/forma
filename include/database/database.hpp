@@ -5,43 +5,44 @@
 #ifndef FORMA_DATABASE_HPP
 #define FORMA_DATABASE_HPP
 
-#include <streambuf>
-#include <istream>
 #include <vector>
-#include <typesystems/typesystem.hpp>
+#include <typesystems/.hpp>
 #include <data_pattern/data_model.hpp>
-#include "target.hpp"
 #include "data_model_shared.hpp"
 #include "forma_database.hpp"
 
 namespace forma {
 /* database */
 template <
-  typename charT
-, typename traits
-, typename allocator = std::allocator<charT>
-, typename tag_allocator = std::allocator<charT>
-, typename flag_allocator = std::allocator<charT>
-, typename targetContainer = std::vector<basic_target
-    <charT,traits,allocator,tag_allocator,flag_allocator> >
+  typename targetT
+, typename istreamT
 >
-class database : public data_pattern::data_model {
+class database
+: public data_pattern::data_model {
 public:
-  typedef basic_target<charT,traits,allocator
-            ,tag_allocator,flag_allocator> target_type;
+  typedef typename istreamT::char_type
+  char_type;
 
+  typedef typename targetT::tag_type
+  tag_type;
+
+  /* ctor */
+  template <typename streambufT>
   database(
-    std::basic_streambuf<charT,traits> *
+    streambufT *
   );
 
+  /* dtor */
   ~database() = default;
 
+  /* next_target */
    void
    next_target(
    );
 
    /* next_target
-      The targetT is any type comparable to basic_target<>::target_type
+      The targetT is any type comparable
+      to basic_target<>::target_type
    */
    template <typename targetT>
    void
@@ -50,101 +51,109 @@ public:
    );
 
 private:
-  std::basic_istream<charT,traits> stream;
+  istreamT stream;
 
-  basic_database_header<charT> header;
+  basic_database_header<char_type>
+  header;
 
-  basic_target<charT,traits,tag_allocator> temp_target;
+  targetT temp_target;
 
-  std::vector<target_type> buffer;
+  std::vector<targetT> target_buffer;
 };
 
 /* forma::database */
 template <
-  typename charT
-, typename traits
-, typename allocator
-, typename tag_allocator
-, typename flag_allocator
-, typename targetContainer
+  typename targetT
+, typename istreamT
 >
-database<charT,traits,allocator,tag_allocator,flag_allocator
-,targetContainer>
-::database
-(
-  std::basic_streambuf<charT,traits> * _buffer
+template <typename streambufT>
+database<targetT,istreamT>::database(
+  streambufT * _buffer
 )
-  : stream (_buffer)
-  , header (get_database_header(this->stream))
-  , temp_target ()
-  , buffer () {
-/* set buffer for tags as forma::target */
-typesystems::set_typebuffer<
-  basic_target<charT,traits,allocator,tag_allocator,flag_allocator>
-, targetContainer>
-(this->typesys);
+: stream (_buffer)
+, header (
+    get_database_header(this->stream)
+  )
+, temp_target ()
+, buffer () {
+
+  typesystems
+::set_typebuffer<
+  targetT
+, typebuffer_queue<targetT>
+>(this->buffer);
 }
 
 /* next_target
 */
 template <
-  typename charT
-, typename traits
-, typename allocator
-, typename tag_allocator
-, typename flag_allocator
-, typename targetContainer
+  typename targetT
+, typename istreamT
 >
 void
-database<charT,traits,allocator,tag_allocator,flag_allocator
-,targetContainer>
-::next_target(
+database<targetT,istreamT>::next_target(
 ){
-auto & target_container
-  = typesystems::use_typebuffer<basic_target<charT,traits,allocator> >
-  (this->typesys);
-std::vector<basic_tag<charT,traits,allocator> > tag_buffer;
+auto &
+target_container = typesystems
+::use_typebuffer<targetT>(
+this->buffer
+);
 
-std::getline(this->stream, this->temp_target.target, this->header.delim);
-  while (is_sub_element(this->stream, this->header.sub_element_delim)){
+std::vector<tag_type> tag_buffer;
+
+std::getline(
+  this->stream
+, this->temp_target.target
+, this->header.delim
+);
+  while (
+    is_sub_element(
+      this->stream
+    , this->header.sub_element_delim
+    )
+  ){
   this->stream.get();
-    if (is_tag(this->stream, this->header.tag_delim)){
+    if (
+      is_tag(
+        this->stream
+      , this->header.tag_delim
+      )
+    ){
     this->stream.get();
-    tag_buffer.push_back(get_tag<charT,traits,tag_allocator>(
+    tag_buffer.push_back(
+      get_tag<charT,traits,tag_allocator>(
         this->stream
       , this->header.tag_seperator_delim
-      , this->header.delim));
+      , this->header.delim
+      )
+    );
     continue;
     }
-  this->temp_target
-   .dependencies[get_sub_element<charT,traits,allocator>
+  this->temp_target.dependencies[
+    get_sub_element<charT,traits,allocator>
      (this->stream, this->header.delim)] = tag_buffer;
   }
 target_container.push(this->temp_target);
 }
 
+/* next_target */
 template <
-  typename charT
-, typename traits
-, typename allocator
-, typename tag_allocator
-, typename flag_allocator
-, typename targetContainer
+  typename targetT
+, typename istreamT
 >
 template <typename targetT>
 void
-database<charT,traits,allocator,tag_allocator,flag_allocator
-,targetContainer>
-::next_target(
+database<targetT,istreamT>::next_target(
   targetT const & _target
 ){
-auto & target_container
-  = typesystems::use_typebuffer<basic_target<charT,traits,allocator> >
-  (this->typesys);
+auto & target
+= typesystems::use_typebuffer<targetT>
+(this->typesys);
+
 this->next_target();
-this->temp_target = target_container.next();
-    if (same_target(this->temp_target, _target)){
-    target_container.push(this->temp_target);
+this->temp_target = target.next();
+    if (this->temp_target == _target){
+    target.push(this->temp_target);
     return;
     } else {
     this->buffer.push_back(this->temp_target);
@@ -153,7 +162,7 @@ this->temp_target = target_container.next();
 auto iter (begin(this->buffer)), iend(end(this->buffer)); 
 while (iter != iend){
   if (same_target(*iter, _target)){
-  target_container.push(*iter);
+  target.push(*iter);
   this->buffer.erase(iter);
   return;
   }

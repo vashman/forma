@@ -31,29 +31,6 @@ return (
 );
 }
 
-/* output_until
-Output iterator value to output until
-token is found.
-*/
-template <
-  typename Token
-, typename InputIt
-, typename OutputIt
->
-void
-output_until(
-  InputIt _begin
-, InputIt _end
-, OutputIt _out
-, Token _token
-){
-  while (_begin != _end){
-    if (*_begin == _token) break;
-  *_out = *_begin;  
-  ++_begin;
-  }
-}
-
 /* used to hold generated output */
 string_t buffer; 
 const int buffer_size = 127;
