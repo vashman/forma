@@ -8,33 +8,25 @@
 #include <taxo/tag.hpp>
 #include <taxo/relation.hpp>
 #include <string>
-#include <memory>
-#include <data_pattern/data_model.hpp>
 
 namespace forma {
 
 typedef taxo::tag tag_t;
-typedef std::string string_t;
 typedef std::string target_t;
 typedef taxo::relation<string_t> flag_t;
 
-typedef
-std::shared_ptr<
-  data_pattern::data_model
->
-context_t;
+enum class event {
+  subsitute_tag
+, subsitute_target
+, subsitute_dependency
+, opening
+, closing
+};
 
-typedef
-std::shared_ptr<
-  data_pattern::data_model
->
-database_t;
-
-typedef 
-pair<
-  target_t
-, idata_model_iterator<tag_t>
-> dependent_t;
+make_context();
+make_forma();
+make_tag();
+make_output();
 
 } /* forma */
 #endif
